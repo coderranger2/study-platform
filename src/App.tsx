@@ -64,7 +64,7 @@ const DesktopShell: React.FC = () => {
       <CinemaOverlay />
 
       {/* 3. Retro 90s Desktop Icon Grid */}
-      <div className="absolute top-4 left-4 z-10 flex flex-col flex-wrap h-[calc(100vh-80px)] gap-y-3 gap-x-2 content-start pointer-events-auto">
+      <div className="absolute top-3 left-2 z-20 flex flex-col gap-y-1 w-20 pointer-events-auto max-h-[calc(100vh-56px)] overflow-y-auto scrollbar-none select-none">
         <DesktopIcon id="campus-map" title="Campus Map" icon="🗺️" badge="L,R,C,N" />
         <DesktopIcon id="study-room" title="Study Rooms" icon="👥" badge="Live" />
         <DesktopIcon id="study-bot" title="StudyBot AI" icon="🤖" />

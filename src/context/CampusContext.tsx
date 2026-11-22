@@ -80,7 +80,7 @@ export const DEFAULT_WINDOWS: WindowState[] = [
     isMinimized: false,
     isMaximized: false,
     zIndex: 10,
-    position: { x: 40, y: 35 },
+    position: { x: 110, y: 25 },
     size: { width: 520, height: 420 },
   },
   {
@@ -91,7 +91,7 @@ export const DEFAULT_WINDOWS: WindowState[] = [
     isMinimized: false,
     isMaximized: false,
     zIndex: 11,
-    position: { x: 380, y: 50 },
+    position: { x: 440, y: 45 },
     size: { width: 620, height: 480 },
   },
   {
@@ -102,7 +102,7 @@ export const DEFAULT_WINDOWS: WindowState[] = [
     isMinimized: false,
     isMaximized: false,
     zIndex: 9,
-    position: { x: 920, y: 70 },
+    position: { x: 960, y: 60 },
     size: { width: 380, height: 490 },
   },
   {

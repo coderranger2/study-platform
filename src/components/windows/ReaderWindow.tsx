@@ -94,19 +94,25 @@ export const ReaderWindow: React.FC = () => {
     }
 
     if (isSpeaking) {
-      window.speechSynthesis.cancel();
+      try {
+        window.speechSynthesis.cancel();
+      } catch (e) {}
       setIsSpeaking(false);
     } else {
-      const textToRead = activeTab === 'summary' && summaryData
-        ? summaryData.summaryBullets.join('. ')
-        : inputText;
-      const utterance = new SpeechSynthesisUtterance(textToRead);
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
-      setIsSpeaking(true);
-      showToast('🔊 Audio reader playing...');
+      try {
+        const textToRead = activeTab === 'summary' && summaryData
+          ? summaryData.summaryBullets.join('. ')
+          : inputText;
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.rate = 0.95;
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
+        window.speechSynthesis.speak(utterance);
+        setIsSpeaking(true);
+        showToast('🔊 Audio reader playing...');
+      } catch (e) {
+        showToast('⚠️ Speech synthesis unavailable in this environment.');
+      }
     }
   };
 

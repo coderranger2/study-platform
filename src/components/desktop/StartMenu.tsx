@@ -33,10 +33,14 @@ export const StartMenu: React.FC<StartMenuProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div
-      className="fixed bottom-[44px] left-0 z-50 w-72 retro-window-frame shadow-2xl flex select-none animate-in fade-in slide-in-from-bottom-2 duration-150"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <>
+      {/* Invisible backdrop to dismiss Start Menu on outside click */}
+      <div className="fixed inset-0 z-40" onClick={onClose} />
+
+      <div
+        className="fixed bottom-[44px] left-0 z-50 w-72 retro-window-frame shadow-2xl flex select-none animate-in fade-in slide-in-from-bottom-2 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
       {/* 90s Vertical Banner */}
       <div className="w-9 bg-gradient-to-t from-[#000080] via-[#1084d0] to-[#000080] flex items-end justify-center py-4 border-r-2 border-white/50">
         <span className="font-display text-white text-xs tracking-widest -rotate-90 origin-bottom-left whitespace-nowrap font-bold pl-3">
@@ -192,5 +196,6 @@ export const StartMenu: React.FC<StartMenuProps> = ({ isOpen, onClose }) => {
         </button>
       </div>
     </div>
+    </>
   );
 };
