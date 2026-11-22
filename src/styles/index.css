@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 90s Desktop Theme Variables */
+:root {
+  --os-bg: #008080;
+  --os-window-bg: #c0c0c0;
+  --os-title-active-from: #000080;
+  --os-title-active-to: #1084d0;
+  --os-title-text: #ffffff;
+  --os-border-light: #ffffff;
+  --os-border-shadow: #808080;
+  --os-border-dark: #000000;
+  --os-text: #000000;
+  --os-accent: #000080;
+}
+
+[data-theme="vaporwave"] {
+  --os-bg: #2d124d;
+  --os-window-bg: #d1c4e9;
+  --os-title-active-from: #d946ef;
+  --os-title-active-to: #06b6d4;
+  --os-title-text: #ffffff;
+  --os-border-light: #f5d0fe;
+  --os-border-shadow: #7e22ce;
+  --os-border-dark: #3b0764;
+  --os-text: #1e1b4b;
+  --os-accent: #d946ef;
+}
+
+[data-theme="matcha"] {
+  --os-bg: #3a5a40;
+  --os-window-bg: #dad7cd;
+  --os-title-active-from: #588157;
+  --os-title-active-to: #344e41;
+  --os-title-text: #ffffff;
+  --os-border-light: #fefae0;
+  --os-border-shadow: #a3b18a;
+  --os-border-dark: #283618;
+  --os-text: #1b261e;
+  --os-accent: #3a5a40;
+}
+
+[data-theme="midnight"] {
+  --os-bg: #090d16;
+  --os-window-bg: #1e293b;
+  --os-title-active-from: #3b82f6;
+  --os-title-active-to: #0f172a;
+  --os-title-text: #f8fafc;
+  --os-border-light: #475569;
+  --os-border-shadow: #0f172a;
+  --os-border-dark: #020617;
+  --os-text: #f1f5f9;
+  --os-accent: #38bdf8;
+}
+
+[data-theme="solarized"] {
+  --os-bg: #073642;
+  --os-window-bg: #eee8d5;
+  --os-title-active-from: #b58900;
+  --os-title-active-to: #cb4b16;
+  --os-title-text: #fdf6e3;
+  --os-border-light: #fdf6e3;
+  --os-border-shadow: #93a1a1;
+  --os-border-dark: #002b36;
+  --os-text: #073642;
+  --os-accent: #b58900;
+}
+
+/* Authentic 90s 3D Beveled Borders */
+.retro-outset {
+  border-top: 2px solid var(--os-border-light);
+  border-left: 2px solid var(--os-border-light);
+  border-right: 2px solid var(--os-border-dark);
+  border-bottom: 2px solid var(--os-border-dark);
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px var(--os-border-shadow);
+}
+
+.retro-inset {
+  border-top: 2px solid var(--os-border-dark);
+  border-left: 2px solid var(--os-border-dark);
+  border-right: 2px solid var(--os-border-light);
+  border-bottom: 2px solid var(--os-border-light);
+  box-shadow: inset 1px 1px var(--os-border-shadow), inset -1px -1px #dfdfdf;
+}
+
+.retro-window-frame {
+  background-color: var(--os-window-bg);
+  border-top: 2px solid var(--os-border-light);
+  border-left: 2px solid var(--os-border-light);
+  border-right: 2px solid var(--os-border-dark);
+  border-bottom: 2px solid var(--os-border-dark);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4), inset 1px 1px #ffffff, inset -1px -1px var(--os-border-shadow);
+}
+
+.retro-btn {
+  background-color: var(--os-window-bg);
+  border-top: 2px solid var(--os-border-light);
+  border-left: 2px solid var(--os-border-light);
+  border-right: 2px solid var(--os-border-dark);
+  border-bottom: 2px solid var(--os-border-dark);
+  box-shadow: inset 1px 1px #ffffff, inset -1px -1px var(--os-border-shadow);
+  cursor: pointer;
+  user-select: none;
+  font-family: inherit;
+  transition: none;
+}
+
+.retro-btn:active, .retro-btn.pressed {
+  border-top: 2px solid var(--os-border-dark);
+  border-left: 2px solid var(--os-border-dark);
+  border-right: 2px solid var(--os-border-light);
+  border-bottom: 2px solid var(--os-border-light);
+  box-shadow: inset 1px 1px var(--os-border-shadow), inset -1px -1px #ffffff;
+  transform: translate(1px, 1px);
+}
+
+/* Title Bar Gradient */
+.retro-titlebar-active {
+  background: linear-gradient(90deg, var(--os-title-active-from) 0%, var(--os-title-active-to) 100%);
+  color: var(--os-title-text);
+}
+
+.retro-titlebar-inactive {
+  background: linear-gradient(90deg, #808080 0%, #a0a0a0 100%);
+  color: #d4d4d4;
+}
+
+/* 90s Dither Pattern */
+.retro-dither {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 0);
+  background-size: 3px 3px;
+}
+
+/* CRT Scanlines Overlay */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.3) 50%
+  );
+  background-size: 100% 4px;
+}
+
+/* 3D Flip Card Container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Custom Retro Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background: #dfdfdf;
+}
+
+::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  border: 1px solid #808080;
+  box-shadow: inset 1px 1px #404040;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+}
+
+::-webkit-scrollbar-thumb:active {
+  border-top: 2px solid #000000;
+  border-left: 2px solid #000000;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
