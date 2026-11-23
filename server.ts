@@ -10,8 +10,21 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
+// Dedicated API Router
+const apiRouter = express.Router();
+
+// Root / Info
+apiRouter.get('/', (_req: Request, res: Response) => {
+  res.json({
+    message: 'StudyHub Express API is running',
+    version: '1.0.0',
+    platform: 'StudyHub / CampusOS 98',
+    endpoints: ['/api/health', '/api/ai/chat', '/api/ai/summarize', '/api/presence'],
+  });
+});
+
 // Health Check
-app.get('/api/health', (_req: Request, res: Response) => {
+apiRouter.get('/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     version: '1.0.0',
@@ -22,7 +35,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 // AI Chat Endpoint with graceful local fallback
-app.post('/api/ai/chat', async (req: Request, res: Response) => {
+apiRouter.post('/ai/chat', async (req: Request, res: Response) => {
   try {
     const { prompt = '', mode = 'explain' } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
@@ -212,7 +225,7 @@ Feel free to ask me to *Quiz you*, *Explain with an analogy*, or *Generate flash
 });
 
 // AI Notes Summarizer Endpoint
-app.post('/api/ai/summarize', (req: Request, res: Response) => {
+apiRouter.post('/ai/summarize', (req: Request, res: Response) => {
   const { text = '', title = 'Study Notes' } = req.body;
   const words = text.split(/\s+/).filter(Boolean);
   const derivedTitle = title || words.slice(0, 5).join(' ') || 'Lecture Summary';
@@ -261,7 +274,7 @@ app.post('/api/ai/summarize', (req: Request, res: Response) => {
 });
 
 // Presence & Multiplayer Room Stats
-app.get('/api/presence', (_req: Request, res: Response) => {
+apiRouter.get('/presence', (_req: Request, res: Response) => {
   res.json({
     totalOnline: 68,
     totalFocusHoursToday: 1248,
@@ -274,6 +287,16 @@ app.get('/api/presence', (_req: Request, res: Response) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🏛️ StudyHub Express Backend listening on port ${PORT}`);
-});
+// Mount router under BOTH /api and / so routes resolve seamlessly locally and in Vercel serverless functions
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
+
+// Only listen locally outside of Vercel serverless environment
+if (process.env.VERCEL !== '1' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🏛️ StudyHub Express Backend listening on port ${PORT}`);
+  });
+}
+
+export default app;
+export { app };

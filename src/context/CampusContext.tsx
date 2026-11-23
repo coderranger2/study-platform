@@ -15,6 +15,8 @@ import {
   SensorySettings,
   SoundState,
   UserStats,
+  UserProfile,
+  ChannelId,
 } from '../types';
 import { sound } from '../services/soundEffects';
 
@@ -548,6 +550,18 @@ interface CampusContextType {
   skyMode: SkyMode;
   setSkyMode: (mode: SkyMode) => void;
 
+  // User Authentication & Profile
+  user: UserProfile | null;
+  login: (name: string, major: string, avatar: string) => void;
+  logout: () => void;
+  isAuthModalOpen: boolean;
+  openAuthModal: () => void;
+  closeAuthModal: () => void;
+
+  // Modern Discord-Style Workspace Active Channel
+  activeChannel: ChannelId;
+  setActiveChannel: (channel: ChannelId) => void;
+
   // Sensory & Accessibility
   sensory: SensorySettings;
   updateSensory: (settings: Partial<SensorySettings>) => void;
@@ -586,6 +600,23 @@ interface CampusContextType {
 const CampusContext = createContext<CampusContextType | null>(null);
 
 export const CampusProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  // --- User Authentication & Session ---
+  const [user, setUser] = useState<UserProfile | null>(() => {
+    const saved = localStorage.getItem('campus_user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return null;
+  });
+
+  const [activeChannel, setActiveChannel] = useState<ChannelId>(() => {
+    return (localStorage.getItem('campus_activeChannel') as ChannelId) || 'silent-library';
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+
   // --- Persistent State from localStorage ---
   const [stats, setStats] = useState<UserStats>(() => {
     const saved = localStorage.getItem('campus_stats');
@@ -802,6 +833,36 @@ export const CampusProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   useEffect(() => {
     localStorage.setItem('campus_decks', JSON.stringify(decks));
   }, [decks]);
+
+  useEffect(() => {
+    localStorage.setItem('campus_activeChannel', activeChannel);
+  }, [activeChannel]);
+
+  const openAuthModal = useCallback(() => setIsAuthModalOpen(true), []);
+  const closeAuthModal = useCallback(() => setIsAuthModalOpen(false), []);
+
+  const login = useCallback((name: string, major: string, avatar: string) => {
+    sound.playLevelUp();
+    const newUser: UserProfile = {
+      id: `usr-${Date.now()}`,
+      name: name.trim() || 'Scholar Student',
+      major: major.trim() || 'Computer Science & AI',
+      avatar: avatar || '🎓',
+      isAuthenticated: true,
+      joinedAt: new Date().toLocaleDateString(),
+    };
+    setUser(newUser);
+    localStorage.setItem('campus_user', JSON.stringify(newUser));
+    setIsAuthModalOpen(false);
+    showToast(`🌟 Welcome to Campus, ${newUser.name}!`);
+  }, [showToast]);
+
+  const logout = useCallback(() => {
+    sound.playClick();
+    setUser(null);
+    localStorage.removeItem('campus_user');
+    showToast('Signed out of Campus workspace.');
+  }, [showToast]);
 
   // Sync Audio State
   useEffect(() => {
@@ -1221,6 +1282,14 @@ export const CampusProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setPet: setActivePet,
         skyMode,
         setSkyMode,
+        user,
+        login,
+        logout,
+        isAuthModalOpen,
+        openAuthModal,
+        closeAuthModal,
+        activeChannel,
+        setActiveChannel,
         sensory,
         updateSensory,
         toggleCinemaMode,

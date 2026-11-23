@@ -130,3 +130,27 @@ export interface UserStats {
   studyMinutesToday: number;
   streakDays: number;
 }
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  major: string;
+  avatar: string;
+  isAuthenticated: boolean;
+  joinedAt: string;
+}
+
+export type ChannelId =
+  | 'silent-library'
+  | 'pomodoro-50-10'
+  | 'late-night-cafe'
+  | 'lofi-gaming-lounge'
+  | 'pdf-ppt-analyzer'
+  | 'adaptive-reader'
+  | 'flashcards-3d'
+  | 'studybot-ai'
+  | 'focus-timer-hub'
+  | 'posture-guard'
+  | 'bookstore-shop'
+  | 'daily-quests';
+
