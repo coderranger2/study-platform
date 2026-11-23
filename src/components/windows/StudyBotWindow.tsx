@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCampus } from '../../context/CampusContext';
 import { askStudyBot, AiResponse } from '../../services/mockAiService';
 import { sound } from '../../services/soundEffects';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 
 interface MessageEntry {
   id: string;
@@ -48,7 +49,33 @@ export const StudyBotWindow: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await askStudyBot(queryText, mode);
+      let response: AiResponse;
+
+      // Try calling Express backend /api/ai/chat first
+      try {
+        const apiRes = await fetch('/api/ai/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: queryText, mode }),
+        });
+        if (apiRes.ok) {
+          const data = await apiRes.json();
+          if (data && data.markdown) {
+            response = {
+              markdown: data.markdown,
+              suggestedCards: data.suggestedCards || [],
+            };
+          } else {
+            response = await askStudyBot(queryText, mode);
+          }
+        } else {
+          response = await askStudyBot(queryText, mode);
+        }
+      } catch (e) {
+        // Graceful local study fallback (guaranteed never crashes)
+        response = await askStudyBot(queryText, mode);
+      }
+
       sound.playWindowOpen();
 
       const botMsg: MessageEntry = {
@@ -144,9 +171,13 @@ export const StudyBotWindow: React.FC = () => {
                 </span>
               </div>
 
-              {/* Message Content */}
-              <div className="whitespace-pre-wrap font-sans text-xs space-y-1">
-                {m.content}
+              {/* Message Content with MarkdownRenderer */}
+              <div className="font-sans text-xs space-y-1">
+                {m.sender === 'bot' ? (
+                  <MarkdownRenderer content={m.content} />
+                ) : (
+                  <div className="whitespace-pre-wrap">{m.content}</div>
+                )}
               </div>
 
               {/* Action Buttons if response has cards */}

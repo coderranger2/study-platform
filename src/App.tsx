@@ -1,15 +1,15 @@
 import React from 'react';
 import { CampusProvider, useCampus } from './context/CampusContext';
-import { DynamicCampusBackdrop } from './components/campus/DynamicCampusBackdrop';
-import { DeskPet } from './components/campus/DeskPet';
-import { RetroWindow } from './components/desktop/RetroWindow';
+import { CampusBackdrop } from './components/CampusBackdrop';
+import { CampusMascot } from './components/CampusMascot';
+import { RetroWindow } from './components/RetroWindow';
 import { DesktopIcon } from './components/desktop/DesktopIcon';
 import { CinemaOverlay } from './components/desktop/CinemaOverlay';
-import { Taskbar } from './components/desktop/Taskbar';
+import { Taskbar } from './components/Taskbar';
 
 // Windows
 import { CampusMapWindow } from './components/windows/CampusMapWindow';
-import { StudyRoomWindow } from './components/windows/StudyRoomWindow';
+import { StudyRoomsWindow } from './components/windows/StudyRoomsWindow';
 import { StudyBotWindow } from './components/windows/StudyBotWindow';
 import { ReaderWindow } from './components/windows/ReaderWindow';
 import { FlashcardsWindow } from './components/windows/FlashcardsWindow';
@@ -28,7 +28,7 @@ const DesktopShell: React.FC = () => {
       case 'campus-map':
         return <CampusMapWindow />;
       case 'study-room':
-        return <StudyRoomWindow />;
+        return <StudyRoomsWindow />;
       case 'study-bot':
         return <StudyBotWindow />;
       case 'reader':
@@ -57,8 +57,8 @@ const DesktopShell: React.FC = () => {
       className="relative w-screen h-screen overflow-hidden select-none"
       data-theme={activeTheme}
     >
-      {/* 1. Dynamic Twilight Campus Sky Backdrop */}
-      <DynamicCampusBackdrop />
+      {/* 1. Dynamic Room Artwork Backdrop (Library, Rooftop, Cafe, Arcade) */}
+      <CampusBackdrop />
 
       {/* 2. Cinema Mode Vignette Overlay */}
       <CinemaOverlay />
@@ -90,8 +90,8 @@ const DesktopShell: React.FC = () => {
         })}
       </div>
 
-      {/* 5. Desk Pet Companion */}
-      <DeskPet />
+      {/* 5. Campus Mascot Companion */}
+      <CampusMascot />
 
       {/* 6. Retro Toast Notification Banner */}
       {toastMessage && (

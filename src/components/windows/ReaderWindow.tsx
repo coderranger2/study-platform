@@ -64,18 +64,38 @@ export const ReaderWindow: React.FC = () => {
     ));
   };
 
-  const handleSummarize = () => {
+  const handleSummarize = async () => {
     sound.playClick();
     setIsSummarizing(true);
-    setTimeout(() => {
-      const result = generateSmartSummary(inputText);
+    try {
+      let result;
+      try {
+        const apiRes = await fetch('/api/ai/summarize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: inputText, title: 'Lecture Notes' }),
+        });
+        if (apiRes.ok) {
+          result = await apiRes.json();
+        } else {
+          result = generateSmartSummary(inputText);
+        }
+      } catch (e) {
+        result = generateSmartSummary(inputText);
+      }
+
       setSummaryData(result);
       setActiveTab('summary');
-      setIsSummarizing(false);
       sound.playLevelUp();
       addXp(45, 'Summarized study notes');
       showToast('📖 Notes successfully structured & summarized! +45 XP');
-    }, 600);
+    } catch (e) {
+      const fallback = generateSmartSummary(inputText);
+      setSummaryData(fallback);
+      setActiveTab('summary');
+    } finally {
+      setIsSummarizing(false);
+    }
   };
 
   const handleExportCards = () => {
