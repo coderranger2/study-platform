@@ -108,11 +108,18 @@ export const RetroWindow: React.FC<RetroWindowProps> = ({ window: win, children 
         </div>
 
         {/* Window action buttons: Minimize, Maximize, Close */}
-        <div className="flex items-center space-x-1 flex-shrink-0" onMouseDown={(e) => e.stopPropagation()}>
+        <div
+          className="flex items-center space-x-1.5 flex-shrink-0"
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* Minimize button */}
           <button
-            onClick={() => minimizeWindow(win.id)}
-            className="w-5 h-5 retro-btn flex items-center justify-center font-bold text-xs text-black leading-none"
+            onClick={(e) => {
+              e.stopPropagation();
+              minimizeWindow(win.id);
+            }}
+            className="w-6 h-6 retro-btn flex items-center justify-center font-bold text-xs text-black leading-none hover:bg-gray-300 active:bg-gray-400"
             title="Minimize"
           >
             _
@@ -120,8 +127,11 @@ export const RetroWindow: React.FC<RetroWindowProps> = ({ window: win, children 
 
           {/* Maximize / Restore button */}
           <button
-            onClick={() => maximizeWindow(win.id)}
-            className="w-5 h-5 retro-btn flex items-center justify-center font-bold text-xs text-black leading-none"
+            onClick={(e) => {
+              e.stopPropagation();
+              maximizeWindow(win.id);
+            }}
+            className="w-6 h-6 retro-btn flex items-center justify-center font-bold text-xs text-black leading-none hover:bg-gray-300 active:bg-gray-400"
             title={win.isMaximized ? 'Restore' : 'Maximize'}
           >
             {win.isMaximized ? '❐' : '□'}
@@ -129,8 +139,11 @@ export const RetroWindow: React.FC<RetroWindowProps> = ({ window: win, children 
 
           {/* Close button */}
           <button
-            onClick={() => closeWindow(win.id)}
-            className="w-5 h-5 retro-btn flex items-center justify-center font-bold text-xs text-black leading-none hover:bg-red-200 active:bg-red-400"
+            onClick={(e) => {
+              e.stopPropagation();
+              closeWindow(win.id);
+            }}
+            className="w-6 h-6 retro-btn flex items-center justify-center font-bold text-xs text-black leading-none hover:bg-red-400 hover:text-white active:bg-red-600"
             title="Close"
           >
             ✕

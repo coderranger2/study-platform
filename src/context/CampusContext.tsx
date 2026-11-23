@@ -967,8 +967,9 @@ export const CampusProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const minimizeWindow = useCallback((id: string) => {
     sound.playClick();
     setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isMinimized: !w.isMinimized } : w))
+      prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
     );
+    setActiveWindowId((prevActive) => (prevActive === id ? null : prevActive));
   }, []);
 
   const maximizeWindow = useCallback((id: string) => {
